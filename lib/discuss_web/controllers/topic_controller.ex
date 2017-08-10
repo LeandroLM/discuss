@@ -5,7 +5,7 @@ defmodule DiscussWeb.TopicController do
   alias Discuss.Repo
 
   def index(conn, _params) do
-    topics = Discuss.Repo.all(Topic)
+    topics = Repo.all(Topic)
     render conn, "index.html", topics: topics
   end
 
@@ -18,7 +18,7 @@ defmodule DiscussWeb.TopicController do
   def create(conn, %{"topic" => topic}) do
     changeset = Topic.changeset(%Topic{}, topic)
 
-    case Discuss.Repo.insert(changeset) do
+    case Repo.insert(changeset) do
       {:ok, _topic} ->
         conn
         |> put_flash(:info, "Topic Created")
@@ -29,14 +29,14 @@ defmodule DiscussWeb.TopicController do
   end
 
   def edit(conn, %{"id" => topic_id}) do
-    topic = Discuss.Repo.get(Topic, topic_id)
+    topic = Repo.get(Topic, topic_id)
     changeset = Topic.changeset(topic)
 
     render conn, "edit.html", changeset: changeset, topic: topic
   end
 
   def update(conn, %{"id" => topic_id, "topic" => topic_params}) do
-    topic = Discuss.Repo.get(Topic, topic_id)
+    topic = Repo.get(Topic, topic_id)
     changeset = Topic.changeset(topic, topic_params)
 
     case Repo.update(changeset) do
